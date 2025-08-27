@@ -1,2 +1,0 @@
-;;; Generated package description from dashboard-ls-20220704.633/dashboard-ls.el  -*- no-byte-compile: t -*-
-(define-package "dashboard-ls" "20220704.633" "Display files/directories in current directory on Dashboard" '((emacs "24.3") (dashboard "1.2.5")) :commit "62cc1aa84c9f5a6657fcd5032574a7670eac5aa0" :authors '(("Shen, Jen-Chieh" . "jcs090218@gmail.com")) :maintainer '("Shen, Jen-Chieh" . "jcs090218@gmail.com") :keywords '("convenience" "directory" "file" "show") :url "https://github.com/emacs-dashboard/dashboard-ls")
