@@ -1,0 +1,33 @@
+# Tangled config (generated from init.org)
+init.el
+
+# Byte-compiled / native-compiled files
+*.elc
+*.eln
+
+# Auto-save files
+*~
+\#*\#
+
+# Org-mode auto-generated files
+*.org_archive
+
+# Emacs backups
+*.bak
+
+# Project-specific files
+.projectile
+.dir-locals.el
+
+# Emacs state/cache directories
+auto-save-list/
+eln-cache/
+eshell/
+transient/
+tramp/
+url/
+bookmarks
+recentf
+lsp-session-v1
+.eglot/
+.cache/

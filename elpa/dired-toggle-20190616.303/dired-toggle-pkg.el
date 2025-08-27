@@ -1,0 +1,2 @@
+;;; Generated package description from dired-toggle-20190616.303/dired-toggle.el  -*- no-byte-compile: t -*-
+(define-package "dired-toggle" "20190616.303" "Show dired as sidebar and will not create new buffers when changing dir" 'nil :commit "7fe5fe35c63d1b0da14d6d6d52bdf6b2a5410ba7" :authors '(("Xu FaSheng <fasheng[AT]fasheng.info>")) :maintainer '("Xu FaSheng") :keywords '("dired" "sidebar") :url "https://github.com/fasheng/dired-toggle")

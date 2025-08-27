@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: PG subscript
+# key: PG
+# --
+_{\mathrm{PG}}
