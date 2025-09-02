@@ -98,21 +98,32 @@ It’s common to hide emphasis markers (e.g., ~/.../~ for italics, ~*...*~ for b
   #+end_src
 
 * UI Tweaks
-#+BEGIN_SRC emacs-lisp
-  (setq default-frame-alist '((fullscreen . maximized)))
-  (when (display-graphic-p)
-    (add-to-list 'default-frame-alist '(undecorated . t)))
 
-  (tool-bar-mode 0)               ;; Disable toolbar
-  (scroll-bar-mode 0)            ;; Disable scrollbars
-  (menu-bar-mode 0)              ;; Disable menu bar
-  (fringe-mode 0)                ;; Set fringe width 0,-1,20
-  (blink-cursor-mode 0)          ;; Disable blinking cursor
-  (global-visual-line-mode 1)    ;; Enable line wrapping globally
-  (set-face-attribute 'default nil :height 150)
-  (setq column-number-mode t)
-  (rainbow-delimiters-mode 1)
-  (show-paren-mode 1)
+Fringes are the thin margins at the left/right edges of GUI Emacs windows where continuation/line-wrap and breakpoint indicators show up.
+
+In terminal (TTY) Emacs, fringes don't exist at all. The terminal can only render the text area. So Emacs just uses the first/last text column to display wrap indicators (=\=,=>=,=<=, etc.). 
+
+#+BEGIN_SRC emacs-lisp
+    (setq default-frame-alist '((fullscreen . maximized)))
+    (when (display-graphic-p)
+      (add-to-list 'default-frame-alist '(undecorated . t)))
+
+    (tool-bar-mode 0)               ;; Disable toolbar
+    ;; Disable scroll bar only when in GUI
+    (when (display-graphic-p) (scroll-bar-mode 0))
+    (menu-bar-mode 0)              ;; Disable menu bar
+
+    (when (display-graphic-p)
+      ;; Only works in GUI frames
+      (fringe-mode 0)) ;; Set left and right fringe width 0,-1,20 (pixels)
+    (blink-cursor-mode 0)          ;; Disable blinking cursor
+    (global-visual-line-mode 1)    ;; Enable line wrapping globally
+    (set-face-attribute 'default nil :height 150)
+    (setq column-number-mode t)
+    (show-paren-mode 1)
+
+  (use-package rainbow-delimiters
+    :hook (prog-mode . rainbow-delimiters-mode))
 
 #+END_SRC
 
