@@ -5,6 +5,7 @@
 
 [[./images/config-screenshot.png]]
 
+
 * About
 
 In Emacs, you can use an init.org file instead of (or alongside) the usual =~/.emacs= for your configuration. This approach is called /literate configuration/: you write your setup in an Org file with explanations, and Emacs uses =org-babel-tangle= to extract the code blocks into a separate file—your =init.el=. This way, your configuration is both executable and documented for your future self (and anyone else who looks at it).
@@ -215,7 +216,7 @@ Use a separate file for options set by customize
       (vertico-mode)
       :custom
       (vertico-count 20) ;; Show more candidates
-      (vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+      ;(vertico-resize t) ;; Grow and shrink the Vertico minibuffer
       )
 
     (define-key vertico-map (kbd "TAB") #'vertico-insert)
