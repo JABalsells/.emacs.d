@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: delta moment (auto-wrap)
+# key: dm
+# --
+`(if (my-tex-in-math-p) "" "\\(") `\Delta(${1:$$(yas-choose-value '("x^2" "x p_x" "p_x^2" "y^2" "y p_y" "p_y^2" "xy" "p_x y" "p_x p_y" "x p_y"))})`(if (my-tex-in-math-p) "" "\\)")`$0

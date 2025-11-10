@@ -36,3 +36,4 @@ lsp-session-v1
 .cache/
 history
 custom.el
+.gptel-key

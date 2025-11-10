@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: over dot
+# key: dot
+# --
+\dot{${1}}$0

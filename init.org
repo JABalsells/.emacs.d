@@ -66,62 +66,52 @@ Places to find additiional themes:
 - [[https://github.com/protesilaos/ef-themes][Ef themes]].
 
 Packages like [[https://github.com/minad/org-modern][org-modern]] make Org buffers prettier while editing
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
-    (use-package org-modern
-      :hook (org-mode . org-modern-mode))
+  (use-package org-modern
+    :hook (org-mode . org-modern-mode))
 
-  #+end_src
+#+end_src
 
 
 It’s common to hide emphasis markers (e.g., ~/.../~ for italics, ~*...*~ for bold, etc.) to have a cleaner visual look, but this makes it harder to edit the text. org-appear is the solution to all my troubles. It displays the markers when the cursor is within them and hides them otherwise, making edits easy while looking pretty.
 
-  #+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp
 
-    (use-package org-appear
-      :commands (org-appear-mode)
-      :hook     (org-mode . org-appear-mode)
-      :config
-      (setq org-hide-emphasis-markers t)  ; Must be activated
-      (setq org-appear-autoemphasis   t   ; Show bold, italics, etc.
-	    org-appear-autolinks      t   ; Show links
-	    org-appear-autosubmarkers t)) ; Show sub- and superscripts
+  (use-package org-appear
+    :commands (org-appear-mode)
+    :hook     (org-mode . org-appear-mode)
+    :config
+    (setq org-hide-emphasis-markers t)  ; Must be activated
+    (setq org-appear-autoemphasis   t   ; Show bold, italics, etc.
+	  org-appear-autolinks      t   ; Show links
+	  org-appear-autosubmarkers t)) ; Show sub- and superscripts
 
 #+END_SRC
 
 * Centering & Linebreaks
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
-    (use-package olivetti
-      :hook (org-mode . olivetti-mode))
+  (use-package olivetti
+    :hook (org-mode . olivetti-mode))
 
-  #+end_src
+#+end_src
 
 * UI Tweaks
 
-Fringes are the thin margins at the left/right edges of GUI Emacs windows where continuation/line-wrap and breakpoint indicators show up.
-
-In terminal (TTY) Emacs, fringes don't exist at all. The terminal can only render the text area. So Emacs just uses the first/last text column to display wrap indicators (=\=,=>=,=<=, etc.). 
-
 #+BEGIN_SRC emacs-lisp
-    (setq default-frame-alist '((fullscreen . maximized)))
-    (when (display-graphic-p)
-      (add-to-list 'default-frame-alist '(undecorated . t)))
 
-    (tool-bar-mode 0)               ;; Disable toolbar
-    ;; Disable scroll bar only when in GUI
-    (when (display-graphic-p) (scroll-bar-mode 0))
-    (menu-bar-mode 0)              ;; Disable menu bar
+  (setq default-frame-alist '((fullscreen . maximized)))
 
-    (when (display-graphic-p)
-      ;; Only works in GUI frames
-      (fringe-mode 0)) ;; Set left and right fringe width 0,-1,20 (pixels)
-    (blink-cursor-mode 0)          ;; Disable blinking cursor
-    (global-visual-line-mode 1)    ;; Enable line wrapping globally
-    (set-face-attribute 'default nil :height 150)
-    (setq column-number-mode t)
-    (show-paren-mode 1)
+
+  (tool-bar-mode 0)               ;; Disable toolbar
+  (menu-bar-mode 0)              ;; Disable menu bar
+  (blink-cursor-mode 0)          ;; Disable blinking cursor
+  (global-visual-line-mode 1)    ;; Enable line wrapping globally
+  (set-face-attribute 'default nil :height 150)
+  (setq column-number-mode t)
+  (show-paren-mode 1)
 
   (use-package rainbow-delimiters
     :hook (prog-mode . rainbow-delimiters-mode))
@@ -141,7 +131,7 @@ A better-looking modeline. After installing the nerd-icons package run =M-x nerd
       :init
       (setq doom-modeline-icon t)   ;; enable icons
       :hook (after-init . doom-modeline-mode))
-  #+end_src
+#+end_src
 
 
 Use a separate file for options set by customize
@@ -202,27 +192,44 @@ Use a separate file for options set by customize
 
 #+end_src
 
-#+RESULTS:
-: t
+** GUI-only frame adjustments:
+
+*vertical border* The thin line is Emacs’s vertical border face (shown between side-by-side windows). This sets the border color equal to the background, so it disappears in GUI frames.
+
+*fringes* Fringes are the thin margins at the left/right edges of GUI Emacs windows where continuation/line-wrap and breakpoint indicators show up.
+
+In terminal (TTY) Emacs, fringes don't exist at all. The terminal can only render the text area. So Emacs just uses the first/last text column to display wrap indicators (=\=,=>=,=<=, etc.). 
+
+
+#+begin_src emacs-lisp
+  (when (display-graphic-p)
+    (set-face-attribute 'vertical-border nil 
+			:foreground (face-background 'default))
+    (add-to-list 'default-frame-alist '(undecorated . t))
+    (scroll-bar-mode 0)
+    (fringe-mode 10)) ;; Set left/right fringe width 0,-1,20 (pixels)
+
+#+end_src
+
 
 * Better completion & buffer switching
 
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 
-    (use-package vertico
-      :ensure t
-      :bind (:map minibuffer-local-map ()  )
-      :init
-      (vertico-mode)
-      :custom
-      (vertico-count 20) ;; Show more candidates
-      ;(vertico-resize t) ;; Grow and shrink the Vertico minibuffer
-      )
+  (use-package vertico
+    :ensure t
+    :bind (:map minibuffer-local-map ()  )
+    :init
+    (vertico-mode)
+    :custom
+    (vertico-count 20) ;; Show more candidates
+					  ;(vertico-resize t) ;; Grow and shrink the Vertico minibuffer
+    )
 
-    (define-key vertico-map (kbd "TAB") #'vertico-insert)
-    (define-key vertico-map (kbd "DEL") #'vertico-directory-delete-word)
+  (define-key vertico-map (kbd "TAB") #'vertico-insert)
+  (define-key vertico-map (kbd "DEL") #'vertico-directory-delete-word)
 
-  #+end_src
+#+end_src
 
 ** Marginalia
 
@@ -284,20 +291,202 @@ Quickly switch windows.
 
 
 
+#+begin_src emacs-lisp
+  ;;; ── Outshine 
+  (use-package outshine
+    :hook ((prog-mode . outshine-mode)
+	   (text-mode . outshine-mode)))
+
+  ;;; ── Bicycle 
+  (use-package bicycle
+    :after outline                   ;; outline must be loaded first
+    :demand t
+    :bind (:map outline-minor-mode-map
+		([C-tab]        . bicycle-cycle)
+		([C-iso-lefttab] . bicycle-cycle-global)))
+#+end_src
+
+
+* AUCTeX / LaTeX setup
+
+Ref: https://github.com/joaotavora/yasnippet/issues/998
+#+begin_src emacs-lisp
+  (defun my-yas-try-expanding-auto-snippets ()
+  (when yas-minor-mode
+    (let ((yas-buffer-local-condition ''(require-snippet-condition . auto)))
+      (yas-expand))))
+(add-hook 'post-command-hook #'my-yas-try-expanding-auto-snippets)
+#+end_src
+Then put ===condition: 'auto=== in the yasnippets you want to be able to expand automatically (between ===name=== and ===key===).
+
+
+First, a helper function that detects if point is inside math mode.
+This is helpful for entering math snippets.
+#+begin_src emacs-lisp
+
+  (defun my-tex-in-math-p ()
+    "Return non-nil if point is inside LaTeX math.
+    Works with AUCTeX and (best-effort) Org."
+    (cond
+     ;; AUCTeX (older/newer names)
+     ((fboundp 'texmathp) (texmathp))
+     ((fboundp 'TeXmathp) (TeXmathp))
+     ;; Org-mode LaTeX fragments
+     ((and (derived-mode-p 'org-mode)
+	   (fboundp 'org-inside-LaTeX-fragment-p))
+      (org-inside-LaTeX-fragment-p))
+     (t nil)))
+
+  (defun my-wrap-math (s)
+    "Wrap S in \\( ... \\) unless already in math."
+    (if (my-tex-in-math-p) s (concat "\\(" s "\\)")))  
+
+     #+end_src
+
+Define abbrev table for LaTeX
+We need to make sure ===abbrev-mode=== is on: ===M-x abbrev-mode===
+This hook should ensure it is always on
+#+begin_src emacs-lisp
+  (add-hook 'LaTeX-mode-hook #'abbrev-mode)
+#+end_src
+
+The table itself includes shortcuts for frequently typed definitions
+#+begin_src emacs-lisp
+
+(with-eval-after-load 'latex
+  (add-hook 'latex-mode-hook #'abbrev-mode)
+  (define-abbrev-table 'latex-mode-abbrev-table
+    '(("dx2"   ""  (lambda () (insert (my-wrap-math "\\Delta(x^2)"))))
+      ("dxpx"  ""  (lambda () (insert (my-wrap-math "\\Delta(x p_x)"))))
+      ("dpx2"  ""  (lambda () (insert (my-wrap-math "\\Delta(p_x^2)"))))
+      ("dy2"   ""  (lambda () (insert (my-wrap-math "\\Delta(y^2)"))))
+      ("dypy"  ""  (lambda () (insert (my-wrap-math "\\Delta(y p_y)"))))
+      ("dpy2"  ""  (lambda () (insert (my-wrap-math "\\Delta(p_y^2)"))))
+      ("dxy"   ""  (lambda () (insert (my-wrap-math "\\Delta(xy)"))))
+      ("dpxy"  ""  (lambda () (insert (my-wrap-math "\\Delta(p_x y)"))))
+      ("dpxpy" ""  (lambda () (insert (my-wrap-math "\\Delta(p_x p_y)"))))
+      ("dxpy"  ""  (lambda () (insert (my-wrap-math "\\Delta(xp_y)"))))
+)))
+
+#+end_src
+
+If I ever want to use the same abbreviations anywhere (Org-mode, Markdown, etc.):
+#+begin_src emacs-lisp :tangle no
+  (define-abbrev-table 'global-abbrev-table
+  '(("dx2"   "\\Delta(x^2)"       nil 1)
+    ("dxpx"  "\\Delta(x p_x)"     nil 1)
+    ("dpx2"  "\\Delta(p_x^2)"     nil 1)
+    ("dy2"   "\\Delta(y^2)"       nil 1)
+    ("dypy"  "\\Delta(y p_y)"     nil 1)
+    ("dpy2"  "\\Delta(p_y^2)"     nil 1)
+    ("dxy"   "\\Delta(xy)"        nil 1)
+    ("dpxy"  "\\Delta(p_x y)"     nil 1)
+    ("dpxpy" "\\Delta(p_x p_y)"   nil 1)
+    ("dxpy"  "\\Delta(x p_y)"     nil 1)))
+
+#+end_src
+
+
 ** PDF Tools
 
-[[https://github.com/vedang/pdf-tools][PDF Tools]] is an improved version of the built-in DocView for viewing PDFs.
+In AUCTeX (the LaTeX package for Emacs), =C-c C-a= (=TeX-command-run-all=) runs the full compile -> view -> bibtex -> etc. chain. By default, it asks you to save if the buffer is modified. You can tell it to always save without prompting before running any TeX command.
 
 #+begin_src emacs-lisp
-  (use-package pdf-tools
-    :defer t
-    :init (pdf-loader-install)
-    :hook ((pdf-view-mode . (lambda () (auto-revert-mode -1)))
-	   (pdf-view-mode . (lambda () (company-mode -1))))
-    :bind (:map pdf-view-mode-map
-					  ; ("C-s"   . isearch-forward)
-		("C-M-s" . pdf-occur)))
+  ;; Always save the current buffer before compiling
+  (setq TeX-save-query nil)
+  (setq TeX-ask-before-save nil)
 #+end_src
+
+A few details:
+
+
+* =TeX-save-query=: if non-nil (the default), AUCTeX asks before saving. Setting it to =nil= disables the query and just saves.
+
+* =TeX-ask-before-save=: an older/related variable; also set to =nil= to be safe.
+
+So with these set, hitting =C-c C-a= will save your =.tex= file automatically and proceed with the compile sequence without asking.
+
+#+begin_src emacs-lisp
+
+
+    ;; AUCTeX
+    (use-package auctex
+      :ensure t
+      :mode ("\\.tex\\'" . LaTeX-mode)
+      :hook ((LaTeX-mode . TeX-source-correlate-mode))
+      :config
+      (setq TeX-source-correlate-method 'synctex
+	    TeX-source-correlate-start-server t
+	    TeX-view-program-selection '((output-pdf "PDF Tools"))
+	    TeX-view-program-list
+	    '(("PDF Tools" TeX-pdf-tools-sync-view))
+	    TeX-command-extra-options "-synctex=1" )
+      :init
+      ;; Make sure texmathp is autoloaded when TeX is around
+      (with-eval-after-load 'tex
+	(require 'texmathp))
+      )
+
+    (with-eval-after-load 'pdf-tools
+      (require 'pdf-sync) ;; provides pdf-sync-backward-search
+      (define-key pdf-view-mode-map (kbd "<C-mouse-1>") #'pdf-sync-backward-search)
+      (define-key pdf-view-mode-map (kbd "C-c C-b")     #'pdf-sync-backward-search))
+
+    ;; Spell-check code vs prose
+    (add-hook 'prog-mode-hook #'flyspell-prog-mode)
+
+    ;; After LaTeX compilation finishes, *then* revert the PDF buffer
+    (add-hook 'TeX-after-compilation-finished-functions
+	      #'TeX-revert-document-buffer)
+    (use-package pdf-tools
+      :ensure t
+      :init (pdf-loader-install)
+      ;; :hook ((pdf-view-mode . (lambda () (auto-revert-mode 1))))
+      :config
+      (require 'pdf-view) (require 'pdf-util) (require 'pdf-info)
+      (setq-default pdf-view-display-size 'fit-height))
+
+    ;; You need a running emacs server so pdf-tools can jump back into source:
+    (require 'server)
+    (unless (server-running-p) (server-start))
+
+    ;; Ensure hide-mode-line is installed
+    (use-package hide-mode-line
+      :ensure t)
+
+    ;; Turn it on automatically for all pdf-tools buffers
+    (add-hook 'pdf-view-mode-hook #'hide-mode-line-mode t)
+
+    (global-set-key (kbd "C-x t") 'hide-mode-line-mode)
+
+    (with-eval-after-load 'tex
+      (when (fboundp 'TeX-pdf-tools-sync-view)
+	(advice-add 'TeX-pdf-tools-sync-view :after
+		    (lambda (&rest _)
+		      (when (derived-mode-p 'pdf-view-mode)
+			(hide-mode-line-mode))))))
+
+    (defun my/latex-font-atkinson ()
+      (when (member "Atkinson Hyperlegible" (font-family-list))
+	(set (make-local-variable 'buffer-face-mode-face)
+	     '(:family "Atkinson Hyperlegible" :height 140))
+	(buffer-face-mode 1)))
+
+    (add-hook 'LaTeX-mode-hook #'my/latex-font-atkinson)
+    ;; (add-hook 'LaTeX-mode-hook
+    ;; 	  (lambda () (set (make-local-variable 'TeX-electric-math)
+    ;; 			  (cons "\\(" "\\)"))))
+  ;; Turn on RefTeX in AUCTeX
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  ;; Activate nice interface between RefTeX and AUCTeX
+  (setq reftex-plug-into-AUCTeX t)
+  (add-hook 'LaTeX-mode-hook
+	#'(lambda ()
+	   (TeX-add-symbols '("eqref" TeX-arg-ref (ignore)))))
+
+#+end_src
+[[https://github.com/vedang/pdf-tools][PDF Tools]] is an improved version of the built-in DocView for viewing PDFs.
+
 
 Warn me when a PDF has been opened with the default DocView mode instead of PDF Tools' PDF View mode.
 
@@ -338,21 +527,11 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
   (global-set-key (kbd "M-p") 'my-scroll-other-window-previous)
 #+end_src
 
+#+begin_src emacs-lisp
 
 
-# ;;; ── Outshine ──────────────────────────────────────────────────────────
-# (use-package outshine
-#   :hook ((prog-mode . outshine-mode)
-#          (text-mode . outshine-mode)))
 
-# ;;; ── Bicycle ───────────────────────────────────────────────────────────
-# (use-package bicycle
-#   :after outline                   ;; outline must be loaded first
-#   :demand t
-#   :hook (outline-minor-mode . bicycle-mode)   ; optional
-#   :bind (:map outline-minor-mode-map
-#               ([C-tab]        . bicycle-cycle)
-#               ([C-iso-lefttab] . bicycle-cycle-global)))
+#+end_src
 
 
 
@@ -401,7 +580,7 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
 # (setq help-window-select t)
 
 
-# (global-set-key (kbd "C-x t") 'hide-mode-line-mode)
+
 
 
 # ;; Use my .bashrc:
@@ -429,21 +608,12 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
 # ;;       (lambda()
 # ;;         (local-set-key [C-tab] 'TeX-complete-symbol)))
 
-# ;; Use variable width font faces in current buffer
-# (defun my-buffer-face-mode-variable ()
-#   "Set font to a variable width (proportional) fonts in current buffer"
-#   (interactive)
-#   (setq buffer-face-mode-face '(:family "Umpush" :height 130 :width semi-condensed))
-#   (buffer-face-mode))
 
 
 
 
 # ;; LaTeX-math-mode http://www.gnu.org/s/auctex/manual/auctex/Mathematics.html
 # (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
-# (add-hook 'LaTeX-mode-hook
-# 	  (lambda () (set (make-local-variable 'TeX-electric-math)
-# 			  (cons "\\(" "\\)"))))
 # ;; (add-hook 'LaTeX-mode-hook
 # ;; 	  (lambda () (outshine-mode nil)))
 		
@@ -465,14 +635,7 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
 # (add-hook 'TeX-mode-hook
 #           (lambda () (TeX-fold-mode 1)))
 
-# ;; Turn on RefTeX in AUCTeX
-# (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
-# ;; Activate nice interface between RefTeX and AUCTeX
-# (setq reftex-plug-into-AUCTeX t)
 
-# (add-hook 'LaTeX-mode-hook
-#       '(lambda ()
-#          (TeX-add-symbols '("eqref" TeX-arg-ref (ignore)))))
 
 # (setq-default TeX-master nil)
 # (setq TeX-parse-self t); Enable parse on load.
@@ -573,15 +736,17 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
 
 
 
-# ;;; yas
-# ;; (add-to-list 'load-path
-# ;;              "/home/joseph/.emacs.d/elpa/yasnippet-20200604.246")
-# (use-package yasnippet
-#   :hook (after-init . yas-global-mode))
 
-# (yas-global-mode 1)
- 
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :hook (after-init . yas-global-mode)
+    :config
+    (yas-global-mode 1)
+    )
 
+(setq yas-triggers-in-field t)
+#+end_src
 
 
 
@@ -651,10 +816,10 @@ Warn me when a PDF has been opened with the default DocView mode instead of PDF 
 
 The package =htmlize= allows you to export ~init.org~ to HTML with ~C-c C-e h h~
 
-  #+begin_src emacs-lisp
-    (use-package htmlize
-      :ensure t)
-  #+end_src
+#+begin_src emacs-lisp
+  (use-package htmlize
+    :ensure t)
+#+end_src
 
 This package can be paired with CSS styling.
 

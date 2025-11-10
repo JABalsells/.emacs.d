@@ -1,0 +1,62 @@
+# -*- mode: snippet -*-
+# name: scratch.tex
+# key: scratch
+# --
+\documentclass[12pt]{article}
+
+\usepackage{authblk}
+\author[1]{Joseph Balsells\footnote{jab934@cornell.edu}}
+% \author[1]{Martin Bojowald\footnote{bojowald@psu.edu}}
+\affil[1]{\small\emph{%
+  Cornell Laboratory for Accelerator-based ScienceS and Education,
+  Cornell University, \\
+  Ithaca, New York, 14853, USA}}
+
+% Page formatting
+\usepackage[left=0.9in, right=0.9in, top=0.5in, bottom=0.5in]{geometry}
+% \usepackage[margin=1.4in]{geometry}
+
+
+% \usepackage{titling}
+% \setlength{\droptitle}{-2em}   % This is your set screw
+
+\usepackage{setspace}
+\onehalfspacing
+
+% No indent first line
+\setlength\parindent{0pt}
+
+\pagenumbering{gobble}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+% Global reset section format % (try commenting it out and see what happens!)
+\usepackage{titlesec}
+
+\titleformat{\section}
+{\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+
+% \usepackage{graphicx}
+% \graphicspath{{images/}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{mathrsfs}
+\DeclareMathOperator{\sech}{sech}
+\DeclareMathOperator{\arccosh}{arccosh}
+\DeclareMathOperator{\arcsinh}{arcsinh}
+\DeclareMathOperator{\arctanh}{arctanh}
+\DeclareMathOperator{\arcsech}{arcsech}
+
+\title{${1:Quick Scratch Calculations}}
+\author{Joseph Balsells}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+${2:\[
+E = mc^2
+\]}
+
+\end{document}
